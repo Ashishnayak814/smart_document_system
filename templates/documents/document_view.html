@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Document Preview | SmartDocs{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <p class="crumb-text">Documents / Preview</p>
+        <h1>{{ document.name }}</h1>
+    </div>
+</div>
+
+<div class="preview-layout">
+    <section class="panel-area preview-pane">
+        {% if document.file_type == 'PDF' %}
+            <iframe src="{{ document.file_url }}" title="{{ document.name }}" class="document-frame"></iframe>
+        {% elif document.file_type == 'JPG' or document.file_type == 'JPEG' or document.file_type == 'PNG' or document.file_type == 'GIF' or document.file_type == 'WEBP' %}
+            <div class="image-preview-wrapper">
+                <img src="{{ document.file_url }}" alt="{{ document.name }}" class="document-image" style="width:320px!important;height:320px!important;max-width:320px!important;max-height:320px!important;object-fit:contain;border-radius:12px;">
+            </div>
+        {% else %}
+            <div class="preview-placeholder">
+                <i class="fas fa-file"></i>
+                <p>Preview is not available for this file type.</p>
+            </div>
+        {% endif %}
+    </section>
+
+    <aside class="panel-area preview-sidebar">
+        <h3>Document Information</h3>
+        <ul class="meta-list stacked">
+            <li><strong>Category:</strong> {{ document.category }}</li>
+            <li><strong>Upload date:</strong> {{ document.uploaded_on }}</li>
+            <li><strong>File type:</strong> {{ document.file_type }}</li>
+            <li><strong>Status:</strong> {{ document.status }}</li>
+        </ul>
+
+        <div class="preview-actions">
+            <a href="{{ document.download_url }}" class="primary-btn"><i class="fas fa-download"></i> Download</a>
+            <form method="post" action="{% url 'delete_document' document.id %}" onsubmit="return confirm('Delete this document permanently?');">
+                {% csrf_token %}
+                <button type="submit" class="danger-btn"><i class="fas fa-trash"></i> Delete</button>
+            </form>
+            <a href="{% url 'documents' %}" class="secondary-btn">Back to Documents</a>
+        </div>
+    </aside>
+</div>
+{% endblock %}

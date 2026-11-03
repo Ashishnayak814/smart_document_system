@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Categories | SmartDocs{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <p class="crumb-text">Documents / Categories</p>
+        <h1>Document Categories</h1>
+    </div>
+</div>
+
+<div class="category-grid">
+    {% for category in categories %}
+    <div class="category-card">
+        <div class="category-card-icon"><i class="{{ category.icon }}"></i></div>
+        <h3>{{ category.name }}</h3>
+        <p>{{ category.count }} document{{ category.count|pluralize }}</p>
+        {% if category.documents %}
+        <div class="category-documents">
+            {% for document in category.documents %}
+            <a href="{% url 'document_view' document.id %}"><i class="fas fa-file-{% if document.file_type == 'PDF' %}pdf{% else %}image{% endif %}"></i> {{ document.name }}</a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-muted">No uploaded files yet.</p>
+        {% endif %}
+        <a href="{% url 'category_detail' category.slug %}" class="primary-btn outlined-btn">Open Category</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}My Documents | SmartDocs{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <p class="crumb-text">Documents / All Files</p>
+        <h1>My Documents</h1>
+    </div>
+    <a href="{% url 'upload_document' %}" class="primary-btn"><i class="fas fa-upload"></i> Upload Document</a>
+</div>
+
+<form method="get" class="toolbar-panel">
+    <div class="toolbar-group input-group-inline">
+        <i class="fas fa-search"></i>
+        <input type="text" name="q" value="{{ query }}" placeholder="Search files...">
+    </div>
+
+    <div class="toolbar-group">
+        <select name="category">
+            <option value="">All Categories</option>
+            {% for category in categories %}<option value="{{ category }}" {% if selected_category == category %}selected{% endif %}>{{ category }}</option>{% endfor %}
+        </select>
+    </div>
+
+    <div class="toolbar-group">
+        <select name="sort">
+            <option value="newest" {% if selected_sort == 'newest' %}selected{% endif %}>Newest First</option>
+            <option value="oldest" {% if selected_sort == 'oldest' %}selected{% endif %}>Oldest First</option>
+            <option value="name" {% if selected_sort == 'name' %}selected{% endif %}>Name</option>
+        </select>
+    </div>
+    <button type="submit" class="primary-btn">Apply</button>
+</form>
+
+<div class="documents-grid">
+    {% for document in documents %}
+    <div class="document-card">
+        <div class="document-card-header">
+            <div class="doc-thumb large"><i class="fas fa-file-{% if document.file_type == 'PDF' %}pdf{% else %}image{% endif %}"></i></div>
+            <a href="{{ document.download_url }}" class="more-btn" aria-label="Download {{ document.name }}"><i class="fas fa-download"></i></a>
+        </div>
+        <div class="document-card-body">
+            <div class="label-tag">{{ document.category }}</div>
+            <h3>{{ document.name }}</h3>
+            <ul class="meta-list">
+                <li><i class="fas fa-calendar-alt"></i> {{ document.uploaded_on }}</li>
+                <li><i class="fas fa-file"></i> {{ document.file_type }}</li>
+                <li><i class="fas fa-check-circle"></i> {{ document.status }}</li>
+            </ul>
+        </div>
+        <div class="document-card-footer">
+            <a href="{% url 'document_view' document.id %}" class="mini-btn secondary">View</a>
+            <a href="{{ document.download_url }}" class="mini-btn">Download</a>
+            <form method="post" action="{% url 'delete_document' document.id %}" class="inline-form" onsubmit="return confirm('Delete this document permanently?');">
+                {% csrf_token %}<button type="submit" class="mini-btn danger-link">Delete</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

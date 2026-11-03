@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}{{ category }} | SmartDocs{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <p class="crumb-text">Documents / Categories / {{ category }}</p>
+        <h1>{{ category }}</h1>
+    </div>
+    <a href="{% url 'categories' %}" class="secondary-btn">Back to Categories</a>
+</div>
+
+<div class="panel-area category-file-list">
+    <h2>{{ documents|length }} file{{ documents|length|pluralize }}</h2>
+    {% if documents %}
+        {% for document in documents %}
+        <div class="result-row">
+            <div class="doc-thumb"><i class="fas fa-file-{% if document.file_type == 'PDF' %}pdf{% else %}image{% endif %}"></i></div>
+            <div class="result-info">
+                <h4>{{ document.name }}</h4>
+                <p>{{ document.file_type }} · {{ document.uploaded_on }}</p>
+            </div>
+            <a href="{% url 'document_view' document.id %}" class="mini-btn secondary">Open</a>
+            <a href="{{ document.download_url }}" class="mini-btn">Download</a>
+            <form method="post" action="{% url 'delete_document' document.id %}" class="inline-form" onsubmit="return confirm('Delete this document permanently?');">
+                {% csrf_token %}<button type="submit" class="mini-btn danger-link">Delete</button>
+            </form>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-muted">No files uploaded in this category yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

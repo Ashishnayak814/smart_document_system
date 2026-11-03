@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Profile | SmartDocs{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <p class="crumb-text">Account / Profile</p>
+        <h1>Profile</h1>
+    </div>
+    <a href="{% url 'settings' %}" class="primary-btn"><i class="fas fa-user-edit"></i> Edit Profile</a>
+</div>
+
+<div class="profile-card panel-area">
+    <div class="profile-header">
+        <div class="profile-avatar">{{ profile.name|slice:':2'|upper }}</div>
+        <div>
+            <h2>{{ profile.name }}</h2>
+            <p>{{ profile.role }}</p>
+        </div>
+    </div>
+
+    <div class="profile-grid">
+        <div class="info-box">
+            <label>Email Address</label>
+            <span>{{ profile.email }}</span>
+        </div>
+        <div class="info-box">
+            <label>Department</label>
+            <span>{{ profile.department }}</span>
+        </div>
+        <div class="info-box">
+            <label>Account Type</label>
+            <span>Professional</span>
+        </div>
+        <div class="info-box">
+            <label>Security</label>
+            <span>Two-step enabled</span>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard | SmartDocs{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <p class="crumb-text">Home / Overview</p>
+        <h1>Welcome back, {{ welcome_name }}!</h1>
+    </div>
+    <a href="{% url 'upload_document' %}" class="primary-btn"><i class="fas fa-upload"></i> Upload New Document</a>
+</div>
+
+<div class="stats-grid">
+    {% for stat in stats %}
+    <div class="stat-card">
+        <div class="stat-icon"><i class="{{ stat.icon }}"></i></div>
+        <div>
+            <p>{{ stat.label }}</p>
+            <h3>{{ stat.value }}</h3>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="content-grid">
+    <section class="panel-area span-2">
+        <div class="section-header">
+            <h2>Recent Documents</h2>
+            <a href="{% url 'documents' %}">View all</a>
+        </div>
+        <div class="document-list">
+            {% for document in recent_documents %}
+            <div class="doc-row">
+                <div class="doc-thumb"><i class="fas fa-file-pdf"></i></div>
+                <div class="doc-meta">
+                    <h4>{{ document.name }}</h4>
+                    <p>{{ document.category }}</p>
+                </div>
+                <span class="doc-date">{{ document.uploaded_on }}</span>
+                <div class="row-actions">
+                    <a href="{% url 'document_view' document.id %}" class="mini-btn secondary">View</a>
+                    <a href="{{ document.download_url }}" class="mini-btn">Download</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="panel-area">
+        <div class="section-header">
+            <h2>Document Categories</h2>
+            <a href="{% url 'categories' %}">View all</a>
+        </div>
+        <div class="category-stack">
+            {% for category in categories %}
+            <div class="category-item">
+                <div class="category-icon"><i class="{{ category.icon }}"></i></div>
+                <div>
+                    <h4><a href="{% url 'category_detail' category.slug %}" class="category-item-link">{{ category.name }}</a></h4>
+                    <p>{{ category.count }} docs</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+
+<section class="panel-area full-width-panel">
+    <div class="section-header">
+        <h2>Quick Actions</h2>
+    </div>
+    <div class="quick-actions">
+        <a href="{% url 'upload_document' %}" class="action-card">
+            <i class="fas fa-file-arrow-up"></i>
+            <span>Upload New Document</span>
+        </a>
+        <a href="{% url 'documents' %}" class="action-card">
+            <i class="fas fa-folder-open"></i>
+            <span>Browse My Documents</span>
+        </a>
+        <a href="{% url 'search_documents' %}" class="action-card">
+            <i class="fas fa-magnifying-glass"></i>
+            <span>Search Documents</span>
+        </a>
+    </div>
+</section>
+{% endblock %}

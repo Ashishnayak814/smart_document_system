@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Upload Document | SmartDocs{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <p class="crumb-text">Documents / Upload</p>
+        <h1>Upload Document</h1>
+    </div>
+</div>
+
+<form method="post" enctype="multipart/form-data" class="upload-panel panel-area">
+    <div class="upload-dropzone" id="dropzone">
+        {% csrf_token %}
+        <div class="dropzone-icon"><i class="fas fa-cloud-arrow-up"></i></div>
+        <h3>Drag & drop your file here</h3>
+        <p>Supports PDF, JPG, PNG and other image formats</p>
+        <label class="upload-btn">
+            <input type="file" name="file" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" required>
+            Browse Files
+        </label>
+    </div>
+
+    <div class="upload-form">
+        <div class="form-group">
+            <label for="document_name">Document Name</label>
+            <input type="text" id="document_name" name="document_name" placeholder="Enter document name">
+        </div>
+
+        <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category" name="category">
+                <option>Auto-detect with ML</option>
+                {% for category in categories %}<option>{{ category }}</option>{% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="4" placeholder="Optional notes or description..."></textarea>
+        </div>
+
+        <button type="submit" class="primary-btn full-width"><i class="fas fa-upload"></i> Upload Document</button>
+    </div>
+</form>
+{% endblock %}

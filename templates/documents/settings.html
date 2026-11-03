@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Settings | SmartDocs{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <p class="crumb-text">Preferences / Settings</p>
+        <h1>Settings</h1>
+    </div>
+</div>
+
+<div class="settings-grid">
+    <form method="post" class="panel-area settings-panel">
+        {% csrf_token %}
+        <h3>Account Settings</h3>
+        <div class="setting-row">
+            <label for="full_name">Full name</label>
+            <input id="full_name" name="full_name" value="{{ account.name }}" required>
+        </div>
+        <div class="setting-row">
+            <label for="email">Email</label>
+            <input id="email" type="email" name="email" value="{{ account.email }}" required>
+        </div>
+        <button type="submit" class="primary-btn">Save Changes</button>
+    </form>
+
+    <div class="panel-area settings-panel">
+        <h3>Password Settings</h3>
+        <form method="post">
+            {% csrf_token %}
+            <div class="setting-row"><label for="current_password">Current password</label><input id="current_password" type="password" name="current_password" required></div>
+            <div class="setting-row"><label for="new_password">New password</label><input id="new_password" type="password" name="new_password" required></div>
+            <div class="setting-row"><label for="confirm_password">Confirm password</label><input id="confirm_password" type="password" name="confirm_password" required></div>
+            <button type="submit" class="mini-btn secondary">Update Password</button>
+        </form>
+    </div>
+
+    <div class="panel-area settings-panel">
+        <h3>Notification Preferences</h3>
+        <div class="setting-row">
+            <span>Email alerts</span>
+            <span>Enabled</span>
+        </div>
+        <div class="setting-row">
+            <span>Upload reminders</span>
+            <span>Weekly</span>
+        </div>
+    </div>
+
+    <div class="panel-area settings-panel">
+        <h3>Appearance Preferences</h3>
+        <div class="setting-row">
+            <span>Theme</span>
+            <span>Dark mode</span>
+        </div>
+        <div class="setting-row">
+            <span>Sidebar mode</span>
+            <span>Compact</span>
+        </div>
+    </div>
+</div>
+{% endblock %}
